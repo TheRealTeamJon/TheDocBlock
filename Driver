@@ -1,0 +1,27 @@
+import cv2
+import requests
+
+# Access the camera and capture an image
+cap = cv2.VideoCapture(0)
+ret, frame = cap.read()
+
+# Save the image to a file
+cv2.imwrite("captured_image.jpg", frame)
+
+# Read the image data
+with open("captured_image.jpg", "rb") as image_file:
+    image_data = image_file.read()
+
+# Set up the API endpoint and headers
+url = "https://detect-skin-disease.p.rapidapi.com/facebody/analysis/detect-skin-disease"
+headers = {
+    "content-type": "multipart/form-data",
+    "X-RapidAPI-Key": "bd7c730fe4msh78ad586de0ddde0p1ebc77jsn266399cf5be1",
+    "X-RapidAPI-Host": "detect-skin-disease.p.rapidapi.com"
+}
+
+# Make the API call with the image data
+response = requests.post(url, headers=headers, data=image_data)
+
+# Print the response
+print(response.text)
